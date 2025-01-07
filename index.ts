@@ -2,6 +2,7 @@ import { createServer } from 'node:http'
 import { app } from './src/app'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
+import { sockerIoAuthMiddleware } from './src/middlewares/sockerAuth.middleware'
 
 dotenv.config()
 
@@ -13,6 +14,8 @@ const io = new Server(server, {
   },
 })
 
+io.use(sockerIoAuthMiddleware)
+
 io.on('connection', (socket) => {
   console.log('User connected')
   socket.on('disconnect', () => {
@@ -20,8 +23,8 @@ io.on('connection', (socket) => {
   })
 
   socket.on('message', (message) => {
-    console.log('Message received:', message)
-    io.emit('message', message)
+    console.log('Message received:', message, socket.data)
+    io.emit('message', message, socket.data.user.name)
   })
 })
 

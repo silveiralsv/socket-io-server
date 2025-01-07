@@ -16,19 +16,23 @@ export async function createUser(
   }
 }
 export async function login(req: Request, res: Response, next: NextFunction) {
-  const validatedData = userValidatonSchema.loginSchema.parse(req.body)
-  const user = await userServices.login(validatedData)
+  try {
+    const validatedData = userValidatonSchema.loginSchema.parse(req.body)
+    const user = await userServices.login(validatedData)
 
-  //set a cookie token
-  const { token, password, ...rest } = user
-  res.cookie('token', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    maxAge: 2 * 60 * 60 * 1000, // 2 hours to live
-  })
+    //set a cookie token
+    const { token, password, ...rest } = user
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 2 * 60 * 60 * 1000, // 2 hours to live
+    })
 
-  res.status(200).json(rest)
+    res.status(200).json(rest)
+  } catch (error) {
+    next(error)
+  }
 }
 export async function logout(req: Request, res: Response, next: NextFunction) {
   res.clearCookie('token', {
