@@ -1,0 +1,35 @@
+{
+  "name": "socket-io-server",
+  "version": "1.0.0",
+  "maintainers": [
+    {
+      "name": "Lucas Vieira",
+      "email": "silveira.lsv@gmail.com"
+    }
+  ],
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "socket.io": "^4.8.1",
+    "typescript": "^5.7.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "eslint": "^9.17.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2"
+  }
+}
