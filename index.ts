@@ -1,6 +1,9 @@
 import { createServer } from 'node:http'
 import { app } from './src/app'
 import { Server } from 'socket.io'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const server = createServer(app)
 
