@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
+import './infra/tracer'
 
 import { router as healthRouter } from './features/healthCheck/healthCheck.router'
 import { router as userRoutes } from './features/user/user.router'
