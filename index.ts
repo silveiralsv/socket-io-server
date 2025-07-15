@@ -3,6 +3,7 @@ import { app } from './src/app'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
 import { sockerIoAuthMiddleware } from './src/middlewares/sockerAuth.middleware'
+import prisma from '@prisma'
 
 dotenv.config()
 
@@ -24,15 +25,36 @@ io.on('connection', (socket) => {
   })
 
   // Handle dynamic topics with a generic event handler
-  socket.on('publish', (topic: string, message: any) => {
+  socket.on('publish', async (topic: string, message: any) => {
     console.log(`Message received on topic '${topic}':`, message, socket.data)
+
+    const room = await prisma.room.upsert({
+      where: {
+
+        name: topic
+      },
+      update: {},
+      create: {
+        name: topic
+      }
+    })
+
+    await prisma.message.create({
+      data: {
+        text: message,
+        roomId: room.id,
+        userId: socket.data.user.id,
+      }
+    })
 
     // Emit to the specific topic
     io.emit(topic, {
-      message,
+      text: message,
       user: socket.data.user.name,
       timestamp: new Date().toISOString(),
     })
+
+    console.log('message sent to all users in the room ', topic)
   })
 
   // Handle joining specific rooms/topics

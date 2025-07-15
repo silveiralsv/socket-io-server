@@ -28,6 +28,8 @@ export async function sockerIoAuthMiddleware(
     return next(new Error('Invalid user'))
   }
 
-  socket.data.user = user
+  const { password: _, ...userWithoutPassword } = user
+
+  socket.data.user = userWithoutPassword
   next()
 }
